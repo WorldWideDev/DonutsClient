@@ -1,26 +1,56 @@
 import React from 'react';
-import logo from './logo.svg';
+import DonutTable from './DonutTable';
+import DonutForm from './DonutForm';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const api = `http://localhost:8080/`;
 
-export default App;
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            donuts: []
+        }
+    }
+    componentDidMount() {
+        this.fetchDonuts();
+    }
+    async delete(id) {
+        await fetch(`${api}/${id}`, {
+            method: 'DELETE',
+        });
+        this.fetchDonuts();
+    }
+    async post(data = {}) {
+        const response = await fetch(api, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+        this.fetchDonuts();
+        return await response.json();
+    }
+    fetchDonuts() {
+        fetch(api)
+            .then(res => {
+                return res.json();
+            })
+            .then(data => {
+                this.setState({donuts: data});
+            });
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <h1>Donuts</h1>
+                <blockquote>A full-circle solution.</blockquote>
+                <DonutForm handleSubmit={(donut) => this.post(donut)}/>
+                <hr />
+                <DonutTable 
+                    onDelete={(id) => this.delete(id)}
+                    donuts={this.state.donuts} />
+            </div>
+        );
+    }
+}
