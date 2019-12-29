@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './DonutRowEdit.css'
 
 export default class DonutRowEdit extends Component {
     constructor(props) {
@@ -14,19 +13,24 @@ export default class DonutRowEdit extends Component {
         updated[field] = input;
         this.setState({model:updated});
     }
-    handleSubmit(e) {
-        e.preventDefault();
+    handleSubmit() {
         let errors = [];
-        this.props.handleSubmit(this.state.model)
+        let {model} = {...this.state};
+        this.props.onSubmit(this.state.model)
             .then(result => {
                 console.log(result);
                 if(result.apierror) {
-                    errors = result.apierror.subErrors;
+                    errors = [...result.apierror.subErrors];
+                    this.props.onReturn("error");
+                }
+                else {
+                    model = {...result}
                 }
                 this.setState({
-                    model: {...donutModel},
-                    errors: [...errors]
+                    errors: errors,
+                    model: model
                 });
+                this.props.onReturn("done");
             });
     }
     render() {
@@ -56,8 +60,12 @@ export default class DonutRowEdit extends Component {
                         onChange={(e) => this.updateModel(e.target.value, "description")}
                         value={this.state.model.description} />
                 </td>
-                <button onClick={() => this.handleSubmit()}
-                        className="btn btn-primary">Submit</button>
+                <td>
+                    <button onClick={() => this.handleSubmit()}
+                        className="btn btn-primary">Update</button>
+                    <button onClick={() => this.props.onReturn("cancel")}
+                        className="btn btn-danger">Cancel</button>
+                </td>
             </tr>
         );
     }

@@ -21,6 +21,15 @@ export default class App extends React.Component {
         });
         this.fetchDonuts();
     }
+    async update(data = {}) {
+        const response = await fetch(`${api}/${data.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+        this.fetchDonuts();
+        return await response.json();
+    }
     async post(data = {}) {
         const response = await fetch(api, {
             method: 'POST',
@@ -49,6 +58,7 @@ export default class App extends React.Component {
                 <hr />
                 <DonutTable 
                     onDelete={(id) => this.delete(id)}
+                    onSubmit={(donut) => this.update(donut)}
                     donuts={this.state.donuts} />
             </div>
         );

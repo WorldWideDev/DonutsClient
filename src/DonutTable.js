@@ -17,6 +17,7 @@ export default class DonutTable extends Component {
                     return (
                         <DonutTableRow 
                             key={donut.id} 
+                            onSubmit={(donut) => this.props.onSubmit(donut)}
                             onDelete={(id) => this.props.onDelete(id)}
                             donut={donut}/>
                     );
