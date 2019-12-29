@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ValidationError from './ValidationError';
 import './DonutForm.css'
 
 const donutModel = {
@@ -36,6 +37,12 @@ export default class DonutForm extends Component {
     render() {
         const nameErrors = this.state.errors.filter(e => e.field === "name");
         const descErrors = this.state.errors.filter(e => e.field === "description");
+        const nameClassName = (nameErrors.length > 0) 
+            ? "form-control is-invalid" 
+            : "form-control";
+        const descClassName = (descErrors.length > 0) 
+            ? "form-control is-invalid" 
+            : "form-control";
         return (
             <form action="#" onSubmit={(e) => this.handleSubmit(e)}>
                 <h3>Add a Donut</h3>
@@ -43,24 +50,22 @@ export default class DonutForm extends Component {
                     <div className="form-group">
                         <label>Name:</label>
                         {nameErrors.map(e => { 
-                            return <span 
-                                key={`${new Date()}: ${e.field}-${e.message}`}
-                                className="error">{e.message}</span>; 
+                            return <ValidationError error={e}
+                                key={`${new Date()}: ${e.field}-${e.message}`}/>; 
                         })}
                         <input type="text" 
-                            className="form-control" 
+                            className={nameClassName} 
                             onChange={(e) => this.updateModel(e.target.value, "name")}
                             value={this.state.model.name} />
                     </div>
                     <div className="form-group">
                         <label>Description:</label>
                         {descErrors.map(e => { 
-                            return <span 
-                                key={`${new Date()}: ${e.field}-${e.message}`}
-                                className="error">{e.message}</span>; 
+                            return <ValidationError error={e}
+                                key={`${new Date()}: ${e.field}-${e.message}`}/>; 
                         })}
                         <input type="text" 
-                            className="form-control" 
+                            className={descClassName} 
                             onChange={(e) => this.updateModel(e.target.value, "description")}
                             value={this.state.model.description} />
                     </div>
