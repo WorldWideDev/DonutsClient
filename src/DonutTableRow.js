@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import DonutRowEdit from './DonutRowEdit';
 const stateMap = {
     EDITING: "EDITING",
     DEFAULT: "DEFAULT",
+    CONFIRM_DELETE: "CONFIRM_DELETE",
     ERROR: "ERROR",
 }
 export default class DonutTableRow extends Component {
@@ -34,6 +35,23 @@ export default class DonutTableRow extends Component {
                 onReturn={(result) => this.handleReturn(result)}/>
         );
     }
+    renderConfirm() {
+        const {donut} = this.props;
+        return (
+            <tr>
+                <td>Are you sure you want to delete this Donut?</td>
+                <td></td>
+                <td>
+                    <button className="btn btn-danger"
+                        onClick={() => this.props.onDelete(donut.id)}
+                    >DO IT</button>
+                    <button className="btn btn-primary"
+                        onClick={() => this.setState({crudState: stateMap.DEFAULT})}
+                    >Cancel</button>
+                </td>
+            </tr>
+        ); 
+    }
     renderDefault() {
         const {donut} = this.props;
         return (
@@ -45,7 +63,7 @@ export default class DonutTableRow extends Component {
                         onClick={() => this.setState({crudState:stateMap.EDITING})}
                         className="btn btn-warning">Edit</button>
                     <button 
-                        onClick={() => this.props.onDelete(donut.id)}
+                        onClick={() => this.setState({crudState: stateMap.CONFIRM_DELETE})}
                         className="btn btn-danger">Delete</button>
                 </td>
             </tr>
@@ -55,6 +73,8 @@ export default class DonutTableRow extends Component {
         switch(this.state.crudState) {
             case stateMap.EDITING:
                 return this.renderEditing();
+            case stateMap.CONFIRM_DELETE:
+                return this.renderConfirm();
             default:
                 return this.renderDefault();
         }
