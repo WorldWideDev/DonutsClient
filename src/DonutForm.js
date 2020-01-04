@@ -21,15 +21,17 @@ export default class DonutForm extends Component {
     }
     handleSubmit(e) {
         e.preventDefault();
-        let errors = [];
+        let errors = [],
+	    model = donutModel;
         this.props.handleSubmit(this.state.model)
             .then(result => {
                 console.log(result);
                 if(result.apierror) {
                     errors = result.apierror.subErrors;
+		    model = this.state.model;
                 }
                 this.setState({
-                    model: {...donutModel},
+		    model: {...model},
                     errors: [...errors]
                 });
             });
