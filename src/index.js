@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import * as serviceWorker from './serviceWorker';
-import TempApp from './Components/TempApp';
+import TempApp from './Components/App';
 
 ReactDOM.render(<TempApp />, document.getElementById('root'));
 

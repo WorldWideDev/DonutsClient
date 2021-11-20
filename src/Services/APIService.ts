@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import Donut from '../Types/Donut';
+import Donut from '../GlobalTypes/Donut';
 
 const API_PREFIX = "http://localhost:8080";
 

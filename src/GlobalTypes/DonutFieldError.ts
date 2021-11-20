@@ -1,4 +1,4 @@
-export default interface DonutFormFieldError {
+export default interface DonutFieldError {
     field:string,
     rejectedValue:string,
     message:string
