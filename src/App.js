@@ -1,6 +1,6 @@
 import React from 'react';
 import DonutTable from './DonutTable';
-import DonutForm from './DonutForm';
+import DonutForm from './Components/DonutForm';
 import './App.css';
 
 const api = `http://localhost:8080/`;
@@ -54,7 +54,7 @@ export default class App extends React.Component {
             <div className="container">
                 <h1>Donuts</h1>
                 <blockquote>A full-circle solution.</blockquote>
-                <DonutForm handleSubmit={(donut) => this.post(donut)}/>
+                <DonutForm />
                 <hr />
                 <DonutTable 
                     onDelete={(id) => this.delete(id)}
